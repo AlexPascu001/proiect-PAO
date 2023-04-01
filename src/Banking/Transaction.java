@@ -12,7 +12,7 @@ public class Transaction {
     public Transaction(String fromIBAN, String toIBAN, double amount, String description) throws Exception {
         if (fromIBAN == null || toIBAN == null || description == null)
             throw new Exception("Null value not allowed");
-        if (amount < 0)
+        if (amount <= 0)
             throw new Exception("Amount cannot be negative");
         this.fromIBAN = fromIBAN;
         this.toIBAN = toIBAN;
@@ -24,7 +24,7 @@ public class Transaction {
     public Transaction(String fromIBAN, String toIBAN, double amount, String description, Date date) throws Exception {
         if (fromIBAN == null || toIBAN == null || description == null || date == null)
             throw new Exception("Null value not allowed");
-        if (amount < 0)
+        if (amount <= 0)
             throw new Exception("Amount cannot be negative");
         this.fromIBAN = fromIBAN;
         this.toIBAN = toIBAN;
