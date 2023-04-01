@@ -12,17 +12,17 @@ public class Account {
     protected String name;
     protected double balance;
     final protected int customerID;
-    protected List<Card> cards = new ArrayList<Card>();
+    protected Card card;
 
 
-    public Account(String IBAN, String swiftCode, String bankName, String name, double balance, int customerID, List<Card> cards) {
+    public Account(String IBAN, String swiftCode, String bankName, String name, double balance, int customerID, Card card) {
         this.IBAN = IBAN;
         this.swiftCode = swiftCode;
         this.bankName = bankName;
         this.name = name;
         this.balance = balance;
         this.customerID = customerID;
-        this.cards = cards;
+        this.card = card;
     }
 
     public Account(String IBAN, String swiftCode, String bankName, String name, double balance, int customerID) {
@@ -108,20 +108,16 @@ public class Account {
         account.deposit(amount);
     }
 
-    public void addCard(Card card) {
-    	this.cards.add(card);
-    }
-
     public void removeCard(Card card) {
-    	this.cards.remove(card);
+    	this.card = null;
     }
 
-    public List<Card> getCards() {
-    	return this.cards;
+    public Card getCard() {
+    	return this.card;
     }
 
-    public void setCards(List<Card> cards) {
-    	this.cards = cards;
+    public void setCard(Card card) {
+    	this.card = card;
     }
 
 
@@ -134,7 +130,7 @@ public class Account {
                 ", name='" + name + '\'' +
                 ", balance=" + balance +
                 ", customerID=" + customerID +
-                ", cards=" + cards +
+                ", card=" + (card != null ? card.toString() : "null") +
                 '}';
     }
 
