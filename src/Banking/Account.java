@@ -3,9 +3,10 @@ package Banking;
 import Card.Card;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-public class Account {
+public class Account implements Comparator<Transaction> {
     protected String IBAN;
     protected String swiftCode;
     protected String bankName;
@@ -39,6 +40,10 @@ public class Account {
         this.customerID = customerID;
         this.IBAN = generateIBAN(uniqueID);
         this.swiftCode = generateSwiftCode(uniqueID);
+    }
+
+    public int compare(Transaction t1, Transaction t2) {
+        return t1.getDate().compareTo(t2.getDate());
     }
 
     public String getIBAN() {
@@ -118,6 +123,15 @@ public class Account {
 
     public void setCard(Card card) {
     	this.card = card;
+    }
+
+    public List<Transaction> filterTransactions(List<Transaction> transactions) {
+        List<Transaction> filteredTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getFromIBAN().equals(this.IBAN) || transaction.getToIBAN().equals(this.IBAN))
+                filteredTransactions.add(transaction);
+        }
+        return filteredTransactions;
     }
 
 

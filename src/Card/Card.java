@@ -2,9 +2,7 @@ package Card;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class Card {
@@ -15,11 +13,19 @@ public class Card {
     private String IBAN;
     private Date expiryDate;
 
+    static private final Set<String> cardNumbers = new HashSet<>();
+
     public Card(int cardID, String IBAN) {
         this.cardID = cardID;
         this.CVV = generateCVV();
         this.PIN = generatePIN();
         this.cardNumber = generateCardNumber();
+
+        while (cardNumbers.contains(this.cardNumber)) {
+            this.cardNumber = generateCardNumber();
+        }
+        cardNumbers.add(this.cardNumber);
+
         this.IBAN = IBAN;
         this.expiryDate = generateExpiryDate();
     }
