@@ -73,7 +73,7 @@ public class Customer {
     }
 
     public String toCSV() {
-        return customerID + "," + firstName + "," + lastName + "," + CNP + "," + address.toCSV() + "," + phoneNumber + "," + email + "," + birthDate;
+        return "Customer," + customerID + "," + firstName + "," + lastName + "," + CNP + "," + address.toCSV() + "," + phoneNumber + "," + email + "," + birthDate;
     }
 
     public int getCustomerID() {

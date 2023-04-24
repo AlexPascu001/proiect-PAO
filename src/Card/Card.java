@@ -76,7 +76,7 @@ public class Card {
     }
 
     public String toCSV() {
-        return cardID + "," + CVV + "," + PIN + "," + cardNumber + "," + IBAN + "," + expiryDate;
+        return "Card," + cardID + "," + CVV + "," + PIN + "," + cardNumber + "," + IBAN + "," + expiryDate;
     }
 
     public int getCardID() {

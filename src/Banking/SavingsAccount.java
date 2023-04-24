@@ -69,6 +69,6 @@ public class SavingsAccount extends Account{
     }
 
     public String toCSV() {
-        return IBAN + "," + swiftCode + "," + bankName + "," + name + "," + balance + "," + customerID + "," + interestRate + "," + startDate;
+        return "SavingsAccount" + IBAN + "," + swiftCode + "," + bankName + "," + name + "," + balance + "," + customerID + "," + interestRate + "," + startDate;
     }
 }

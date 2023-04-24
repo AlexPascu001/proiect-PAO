@@ -65,6 +65,6 @@ public class Transaction {
     }
 
     public String toCSV() {
-        return fromIBAN + "," + toIBAN + "," + amount + "," + description + "," + date;
+        return "Transaction," + fromIBAN + "," + toIBAN + "," + amount + "," + description + "," + date;
     }
 }

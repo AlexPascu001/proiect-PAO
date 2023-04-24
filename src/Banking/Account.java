@@ -149,6 +149,6 @@ public class Account implements Comparator<Transaction> {
     }
 
     public String toCSV() {
-        return IBAN + "," + swiftCode + "," + bankName + "," + name + "," + balance + "," + customerID;
+        return "Account," + IBAN + "," + swiftCode + "," + bankName + "," + name + "," + balance + "," + customerID;
     }
 }
