@@ -5,12 +5,12 @@
 Să se creeze o lista pe baza temei alese cu cel puțin 10 acțiuni/interogări care se pot face în cadrul sistemului și o lista cu cel puțin 8 tipuri de obiecte.
 
 ### Tipuri de obiecte:
-- `Customer`
+- `model.customer`
 - `Address`
 - `Account`
 - `SavingsAccount`
 - `Transaction`
-- `Card`
+- `model.card`
 - `MasterCard`
 - `Visa`
 - `BankService`

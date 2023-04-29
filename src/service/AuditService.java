@@ -1,4 +1,4 @@
-package Service;
+package service;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -35,7 +35,17 @@ public class AuditService {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+    }
 
+    public void logException(Exception e) {
+        try {
+            FileWriter fileWriter = new FileWriter(filePath, true);
+            fileWriter.write(e.getMessage() + ",");
+            fileWriter.close();
+        } catch (IOException exception) {
+            System.out.println("An error occurred.");
+            exception.printStackTrace();
+        }
     }
 
 }

@@ -1,6 +1,7 @@
-package Banking;
+package model.banking;
 
-import Card.Card;
+import model.card.Card;
+import exceptions.InsufficientFundsException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -104,7 +105,7 @@ public class Account implements Comparator<Transaction> {
 
     public void withdraw(double amount) throws Exception{
         if (this.balance < amount)
-            throw new Exception("You do not have enough money!");
+            throw new InsufficientFundsException();
         this.balance -= amount;
     }
 

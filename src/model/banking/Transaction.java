@@ -1,4 +1,6 @@
-package Banking;
+package model.banking;
+
+import exceptions.*;
 
 import java.util.Date;
 
@@ -11,9 +13,9 @@ public class Transaction {
 
     public Transaction(String fromIBAN, String toIBAN, double amount, String description) throws Exception {
         if (fromIBAN == null || toIBAN == null || description == null)
-            throw new Exception("Null value not allowed");
+            throw new NullValueException();
         if (amount <= 0)
-            throw new Exception("Amount cannot be negative");
+            throw new NegativeValueException();
         this.fromIBAN = fromIBAN;
         this.toIBAN = toIBAN;
         this.amount = amount;
@@ -23,9 +25,9 @@ public class Transaction {
 
     public Transaction(String fromIBAN, String toIBAN, double amount, String description, Date date) throws Exception {
         if (fromIBAN == null || toIBAN == null || description == null || date == null)
-            throw new Exception("Null value not allowed");
+            throw new NullValueException();
         if (amount <= 0)
-            throw new Exception("Amount cannot be negative");
+            throw new NegativeValueException();
         this.fromIBAN = fromIBAN;
         this.toIBAN = toIBAN;
         this.amount = amount;

@@ -1,11 +1,12 @@
-import Service.BankService;
-import Banking.*;
-import Customer.*;
-import Card.*;
+import service.BankService;
+import model.banking.*;
+import model.customer.*;
+import model.card.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) throws Exception {
         BankService BankService = new BankService();
@@ -33,8 +34,9 @@ public class Main {
         System.out.println(savingsAccount.getInterestPerYear());
         System.out.println(transaction.toString());
         System.out.println(transaction.getAmount());
-        System.out.println(account.filterTransactions(new ArrayList<>() {{
-            add(transaction);
-        }}));
+        
+        List<Transaction> transactions = new ArrayList<>();
+        transactions.add(transaction);
+        System.out.println(account.filterTransactions(transactions));
     }
 }

@@ -1,4 +1,4 @@
-package Banking;
+package model.banking;
 
 import java.util.Date;
 

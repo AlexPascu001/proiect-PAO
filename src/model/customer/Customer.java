@@ -1,6 +1,7 @@
-package Customer;
+package model.customer;
 
-import Banking.Account;
+import model.banking.Account;
+import exceptions.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,17 +17,19 @@ public class Customer {
     private String email;
     private Date birthDate;
 
-    List<Account> accounts = new ArrayList<Account>();
+    List<Account> accounts = new ArrayList<>();
 
     public Customer(int customerID, String firstName, String lastName, String CNP, Address address, String phoneNumber, String email, Date birthDate, List<Account> accounts) throws Exception {
         if (firstName == null || lastName == null || CNP == null || address == null || phoneNumber == null || email == null || birthDate == null)
-            throw new IllegalArgumentException("Null value not allowed");
-        if ((CNP.length() != 13) || (phoneNumber.length() != 10))
-            throw new IllegalArgumentException("Invalid CNP or phone number");
+            throw new NullValueException();
+        if (CNP.length() != 13)
+            throw new InvalidCNPException();
+        if (phoneNumber.length() != 10)
+            throw new InvalidPhoneNumberException();
         if (customerID < 0)
-            throw new IllegalArgumentException("Customer ID cannot be negative");
+            throw new NegativeValueException();
         if ((new Date()).getTime()- birthDate.getTime() < 18L * 365 * 24 * 60 * 60 * 1000)
-            throw new IllegalArgumentException("Customer must be at least 18 years old");
+            throw new IllegalAgeException();
         this.customerID = customerID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -40,13 +43,15 @@ public class Customer {
 
     public Customer(int customerID, String firstName, String lastName, String CNP, Address address, String phoneNumber, String email, Date birthDate) throws Exception {
         if (firstName == null || lastName == null || CNP == null || address == null || phoneNumber == null || email == null || birthDate == null)
-            throw new IllegalArgumentException("Null value not allowed");
-        if ((CNP.length() != 13) || (phoneNumber.length() != 10))
-            throw new IllegalArgumentException("Invalid CNP or phone number");
+            throw new NullValueException();
+        if (CNP.length() != 13)
+            throw new InvalidCNPException();
+        if (phoneNumber.length() != 10)
+            throw new InvalidPhoneNumberException();
         if (customerID < 0)
-            throw new IllegalArgumentException("Customer ID cannot be negative");
+            throw new NegativeValueException();
         if ((new Date()).getTime()- birthDate.getTime() < 18L * 365 * 24 * 60 * 60 * 1000)
-            throw new IllegalArgumentException("Customer must be at least 18 years old");
+            throw new IllegalAgeException();
         this.customerID = customerID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -59,7 +64,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "model.Customer{" +
                 "customerID=" + customerID +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -73,7 +78,7 @@ public class Customer {
     }
 
     public String toCSV() {
-        return "Customer," + customerID + "," + firstName + "," + lastName + "," + CNP + "," + address.toCSV() + "," + phoneNumber + "," + email + "," + birthDate;
+        return "model.Customer," + customerID + "," + firstName + "," + lastName + "," + CNP + "," + address.toCSV() + "," + phoneNumber + "," + email + "," + birthDate;
     }
 
     public int getCustomerID() {

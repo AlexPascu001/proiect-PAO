@@ -1,19 +1,17 @@
-package Card;
+package model.card;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.function.Consumer;
 
-public class Card {
+public abstract class Card {
     private final int cardID;
     private final int CVV;
     private final int PIN;
     private String cardNumber;
-    private String IBAN;
-    private Date expiryDate;
+    private final String IBAN;
+    private final Date expiryDate;
 
-    static private final Set<String> cardNumbers = new HashSet<>();
+    private static final Set<String> cardNumbers = new HashSet<>();
+    private static final Random random = new Random();
 
     public Card(int cardID, String IBAN) {
         this.cardID = cardID;
@@ -30,26 +28,16 @@ public class Card {
         this.expiryDate = generateExpiryDate();
     }
 
-    public Card(int cardID, String IBAN, String name) {
-        this.cardID = cardID;
-        this.CVV = generateCVV();
-        this.PIN = generatePIN();
-        this.cardNumber = generateCardNumber();
-        this.IBAN = IBAN;
-        this.expiryDate = generateExpiryDate();
-    }
-
     private int generateCVV() {
-        return 100 + (int) (Math.random() * 900);
+        return 100 + random.nextInt(900);
     }
 
     private int generatePIN() {
-        return 1000 + (int) (Math.random() * 9000);
+        return 1000 + random.nextInt(9000);
     }
 
     private String generateCardNumber() {
         char[] array = new char[16];
-        var random = new Random();
         for (int i = 0; i < 16; i++) {
             array[i] = (char) (48 + (Math.abs(random.nextInt()) % 10));
         }
@@ -65,7 +53,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card{" +
+        return "model.Card{" +
                 "cardID=" + cardID +
                 ", CVV=" + CVV +
                 ", PIN=" + PIN +
@@ -76,7 +64,7 @@ public class Card {
     }
 
     public String toCSV() {
-        return "Card," + cardID + "," + CVV + "," + PIN + "," + cardNumber + "," + IBAN + "," + expiryDate;
+        return "model.Card," + cardID + "," + CVV + "," + PIN + "," + cardNumber + "," + IBAN + "," + expiryDate;
     }
 
     public int getCardID() {
@@ -102,4 +90,6 @@ public class Card {
     public Date getExpiryDate() {
         return expiryDate;
     }
+
+    public abstract double fee();
 }

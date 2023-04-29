@@ -1,15 +1,16 @@
-package Service;
-import Banking.*;
-import Customer.*;
-import Card.*;
+package service;
+import model.banking.*;
+import model.customer.*;
+import model.card.*;
+import service.AuditService;
 
 import java.util.Date;
 
 public class BankService {
     private static int customerIDs = 0;
     private static int cardIDs = 0;
+    AuditService auditService;
 
-    //TODO: add methods for creating accounts, customers, cards, etc.
     public Account createAccount(String IBAN, String swiftCode, String bankName, String name, double balance, int customerID) {
         return new Account(IBAN, swiftCode, bankName, name, balance, customerID);
     }
@@ -18,12 +19,26 @@ public class BankService {
         try {
             return new Customer(++customerIDs, firstName, lastName, CNP, address, phoneNumber, email, birthDate);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            auditService.logException(e);
         }
+        return null;
     }
 
     public Card createCard(String IBAN) {
-        return new Card(++cardIDs, IBAN);
+        return new Card(++cardIDs, IBAN) {
+            @Override
+            public double fee() {
+                return 0;
+            }
+        };
+    }
+
+    public MasterCard createMasterCard(String IBAN) {
+        return new MasterCard(++cardIDs, IBAN);
+    }
+
+    public Visa createVisa(String IBAN) {
+        return new Visa(++cardIDs, IBAN);
     }
 
     public SavingsAccount createSavingsAccount(String IBAN, String swiftCode, String bankName, String name, double balance, int customerID, double interestRate, Date startDate) {
@@ -35,8 +50,9 @@ public class BankService {
             return new Transaction(fromIBAN, toIBAN, amount, description, date);
         }
         catch (Exception e) {
-            throw new RuntimeException(e);
+            auditService.logException(e);
         }
+        return null;
     }
 
 }
