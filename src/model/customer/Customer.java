@@ -3,6 +3,8 @@ package model.customer;
 import model.banking.Account;
 import exceptions.*;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,6 +62,26 @@ public class Customer {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.birthDate = birthDate;
+    }
+
+    public Customer(int customerID, ResultSet in) {
+        this.customerID = customerID;
+        this.read(in);
+    }
+
+    private void read(ResultSet in) {
+        try {
+            this.firstName = in.getString("firstName");
+            this.lastName = in.getString("lastName");
+            this.CNP = in.getString("CNP");
+            this.address = new Address(in);
+            this.phoneNumber = in.getString("phone");
+            this.email = in.getString("email");
+            this.birthDate = in.getDate("birthDate");
+        }
+        catch (SQLException e) {
+            System.out.println(e.toString());
+        }
     }
 
     @Override

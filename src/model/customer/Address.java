@@ -1,5 +1,8 @@
 package model.customer;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Address {
     private String street;
     private String city;
@@ -11,6 +14,22 @@ public class Address {
         this.city = city;
         this.country = country;
         this.zipCode = zipCode;
+    }
+
+    public Address(ResultSet in) {
+        this.read(in);
+    }
+
+    private void read(ResultSet in) {
+        try {
+            this.street = in.getString("street");
+            this.city = in.getString("city");
+            this.country = in.getString("country");
+            this.zipCode = in.getInt("zipcode");
+        }
+        catch (SQLException e) {
+            System.out.println(e.toString());
+        }
     }
 
     @Override
@@ -52,7 +71,7 @@ public class Address {
     }
 
     public int getZipCode() {
-        return zipCode;
+        return this.zipCode;
     }
 
     public void setZipCode(int zipCode) {
