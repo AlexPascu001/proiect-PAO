@@ -1,16 +1,15 @@
 package model.customer;
 
 import java.sql.*;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerDatabase {
+public class CustomerService {
     private Connection connection;
     private CustomerFactory customerFactory;
 
-    public CustomerDatabase(Connection connection) {
+    public CustomerService(Connection connection) {
         this.connection = connection;
     }
 

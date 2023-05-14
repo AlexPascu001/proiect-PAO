@@ -1,14 +1,15 @@
 package model.card;
 
+import java.sql.ResultSet;
 import java.util.*;
 
 public abstract class Card {
     private final int cardID;
-    private final int CVV;
-    private final int PIN;
+    private int CVV;
+    private int PIN;
     private String cardNumber;
-    private final String IBAN;
-    private final Date expiryDate;
+    private String IBAN;
+    private Date expiryDate;
 
     private static final Set<String> cardNumbers = new HashSet<>();
     private static final Random random = new Random();
@@ -26,6 +27,23 @@ public abstract class Card {
 
         this.IBAN = IBAN;
         this.expiryDate = generateExpiryDate();
+    }
+
+    public Card(int cardID, ResultSet in) {
+        this.cardID = cardID;
+        this.read(in);
+    }
+
+    public void read(ResultSet in) {
+        try {
+            this.cardNumber = in.getString("cardNumber");
+            this.CVV = in.getInt("CVV");
+            this.PIN = in.getInt("PIN");
+            this.IBAN = in.getString("IBAN");
+            this.expiryDate = in.getDate("expiryDate");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private int generateCVV() {

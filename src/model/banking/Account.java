@@ -1,8 +1,10 @@
 package model.banking;
 
-import model.card.Card;
+import model.card.*;
 import exceptions.InsufficientFundsException;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -41,6 +43,25 @@ public class Account implements Comparator<Transaction> {
         this.customerID = customerID;
         this.IBAN = generateIBAN(uniqueID);
         this.swiftCode = generateSwiftCode(uniqueID);
+    }
+
+    public Account(int customerID, ResultSet in) {
+        this.customerID = customerID;
+        this.read(in);
+    }
+
+    private void read(ResultSet in) {
+        try {
+            this.IBAN = in.getString("IBAN");
+            this.swiftCode = in.getString("swiftCode");
+            this.bankName = in.getString("bankName");
+            this.name = in.getString("name");
+            this.balance = in.getDouble("balance");
+            // TODO: card?
+        }
+        catch (SQLException e) {
+            System.out.println(e.toString());
+        }
     }
 
     public int compare(Transaction t1, Transaction t2) {

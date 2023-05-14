@@ -2,14 +2,17 @@ package model.banking;
 
 import exceptions.*;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class Transaction {
-    private final String fromIBAN;
-    private final String toIBAN;
-    private final double amount;
-    private final String description;
-    private final Date date;
+    private int transactionID;
+    private String fromIBAN;
+    private String toIBAN;
+    private double amount;
+    private String description;
+    private Date date;
 
     public Transaction(String fromIBAN, String toIBAN, double amount, String description) throws Exception {
         if (fromIBAN == null || toIBAN == null || description == null)
@@ -33,6 +36,27 @@ public class Transaction {
         this.amount = amount;
         this.description = description;
         this.date = date;
+    }
+
+    public Transaction(int transactionID, ResultSet in) {
+        this.transactionID = transactionID;
+        this.read(in);
+    }
+
+    public void read(ResultSet in) {
+        try {
+            this.fromIBAN = in.getString("fromIBAN");
+            this.toIBAN = in.getString("toIBAN");
+            this.amount = in.getDouble("amount");
+            this.description = in.getString("description");
+            this.date = in.getDate("date");
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    public int getTransactionID() {
+        return transactionID;
     }
 
     public String getFromIBAN() {

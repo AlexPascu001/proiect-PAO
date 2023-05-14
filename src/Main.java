@@ -23,5 +23,6 @@ public class Main {
         catch (SQLException e) {
             throw new IllegalStateException("Cannot connect to database!", e);
         }
+
     }
 }
