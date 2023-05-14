@@ -43,3 +43,20 @@ Aplicația va conține:
 * utilizare moștenire pentru crearea de clase adiționale și utilizarea lor încadrul colecțiilor;
 * cel puțin o clasă serviciu care sa expună operațiile sistemului
 * o clasa Main din care sunt făcute apeluri către servicii
+
+
+## Etapa II
+### 1) Extindeți proiectul din prima etapă prin realizarea persistenței utilizând o bază de date relațională și JDBC.
+Să se realizeze servicii care sa expună operații de tip `create`, `read`, `update` și `delete` pentru cel puțin 4
+dintre clasele definite. Se vor realiza servicii singleton generice pentru scrierea și citirea din baza de
+date.
+
+#### Clasele pentru care se realizează serviciile
+- `Customer`
+- `Account`
+- `Card`
+- `Transaction`
+
+### 2) Realizarea unui serviciu de audit
+Se va realiza un serviciu care sa scrie într-un fișier de tip CSV de fiecare data când este executată una
+dintre acțiunile descrise în prima etapa. Structura fișierului: `nume_actiune, timestamp`
