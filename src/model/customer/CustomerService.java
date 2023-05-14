@@ -8,9 +8,17 @@ import java.util.List;
 public class CustomerService {
     private Connection connection;
     private CustomerFactory customerFactory;
+    private static CustomerService instance = null;
 
-    public CustomerService(Connection connection) {
+    private CustomerService(Connection connection) {
         this.connection = connection;
+    }
+
+    public static CustomerService getInstance(Connection connection) {
+        if (instance == null) {
+            instance = new CustomerService(connection);
+        }
+        return instance;
     }
 
     public void create(Customer customer) {

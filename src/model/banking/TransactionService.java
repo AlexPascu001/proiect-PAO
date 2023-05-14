@@ -8,9 +8,17 @@ import java.util.List;
 public class TransactionService {
     private Connection connection;
     private TransactionFactory transactionFactory;
+    private static TransactionService instance = null;
 
-    public TransactionService(Connection connection) {
+    private TransactionService(Connection connection) {
         this.connection = connection;
+    }
+
+    public static TransactionService getInstance(Connection connection) {
+        if (instance == null) {
+            instance = new TransactionService(connection);
+        }
+        return instance;
     }
 
     public void create(Transaction transaction) {

@@ -8,9 +8,17 @@ import java.util.List;
 public class CardService {
     private Connection connection;
     private CardFactory cardFactory;
+    private static CardService instance = null;
 
-    public CardService(Connection connection) {
+    private CardService(Connection connection) {
         this.connection = connection;
+    }
+
+    public static CardService getInstance(Connection connection) {
+        if (instance == null) {
+            instance = new CardService(connection);
+        }
+        return instance;
     }
 
     public void create(MasterCard masterCard) {
