@@ -5,7 +5,7 @@
 Să se creeze o lista pe baza temei alese cu cel puțin 10 acțiuni/interogări care se pot face în cadrul sistemului și o lista cu cel puțin 8 tipuri de obiecte.
 
 ### Tipuri de obiecte:
-- `model.customer`
+- `Customer`
 - `Address`
 - `Account`
 - `SavingsAccount`
