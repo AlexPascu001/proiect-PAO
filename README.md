@@ -30,7 +30,6 @@ Să se creeze o lista pe baza temei alese cu cel puțin 10 acțiuni/interogări 
 - ștergerea unui cont asociat unui client (`removeAccount`)
 - obținerea conturilor asociate unui client (`getAccounts`)
 - obținerea adresei unui client (`getAddress`) - pentru a trimite recuperatorii :)
-- obținerea ratei dobânzii și a dobânzii anuale pentru un cont de economii (`getInterestRate`/`getInterestPerYear`)
 - afișarea detaliilor unui client, card, cont (`override toString()` în fiecare clasă) 
 - afișarea tranzacțiilor unui client (`filterTransactions`)
 
