@@ -16,17 +16,15 @@ Să se creeze o lista pe baza temei alese cu cel puțin 10 acțiuni/interogări 
 - `BankService`
 
 ### Acțiuni
-- crearea unui client (`createCustomer`)
-- crearea unui cont bancar (`createAccount`)
-- crearea unui card (`createCard`)
-- crearea unei tranzacții (`createTransaction`)
+- crearea unui client/cont bancar/card/tranzacție (`create|Customer/Account/Card/Transaction`)
 - crearea de carduri de tipuri diferite (`MasterCard`/`Visa`)
+- actualizarea unui client/cont bancar/card/tranzacție (`update|Customer/Account/Card/Transaction`)
+- citirea clienților/conturilor bancare/cardurilor/tranzacțiilor (`read|Customers/Accounts/Cards/Transactions`)
+- citirea unui client/cont bancar/card/tranzacție (`read|Customer/Account/Card/Transaction`)
+- ștergerea unui client/cont bancar/card/tranzacție (`delete|Customer/Account/Card/Transaction`)
 - obținerea soldului bancar (`getBalance`)
 - adaugarea/retragerea unei sume de bani (`deposit`/`withdraw`)
 - transferul unei sume de bani (`transfer`)
-- adăugarea unui nou card la un cont (`setCard`)
-- obținerea cardului asociat unui cont (`getCard`)
-- adăugarea unui nou cont asociat unui client (`addAccount`)
 - ștergerea unui cont asociat unui client (`removeAccount`)
 - obținerea conturilor asociate unui client (`getAccounts`)
 - obținerea adresei unui client (`getAddress`) - pentru a trimite recuperatorii :)
