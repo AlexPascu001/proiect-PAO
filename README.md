@@ -10,7 +10,7 @@ Să se creeze o lista pe baza temei alese cu cel puțin 10 acțiuni/interogări 
 - `Account`
 - `SavingsAccount`
 - `Transaction`
-- `model.card`
+- `Card`
 - `MasterCard`
 - `Visa`
 - `BankService`
