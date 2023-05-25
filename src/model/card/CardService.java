@@ -6,8 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class CardService {
-    private Connection connection;
-    private CardFactory cardFactory;
+    private final Connection connection;
+    private CardFactory cardFactory = new CardFactory();
     private static CardService instance = null;
 
     private CardService(Connection connection) {
@@ -65,18 +65,47 @@ public class CardService {
             String sql = "SELECT * FROM Cards";
             Statement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery(sql);
-            String type = resultSet.getString("type");
-            while (resultSet.next()) {
-                Card card = cardFactory.createCard(type, resultSet);
-                cards.add(card);
+            if (resultSet == null) {
+                statement.close();
+                return cards;
+            }
+            if (resultSet.next()) {
+                String type = resultSet.getString("type");
+                while (resultSet.next()) {
+                    Card card = cardFactory.createCard(type, resultSet);
+                    card.setCardID(resultSet.getInt("cardID"));
+                    cards.add(card);
+                }
             }
             resultSet.close();
             statement.close();
         }
         catch (SQLException e) {
+            System.out.println("Error in CardService.read()");
             System.out.println(e.toString());
         }
         return cards;
+    }
+
+    public Card read(int cardID) {
+        Card card = null;
+        try {
+            String sql = "SELECT * FROM Cards WHERE cardID = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, cardID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String type = resultSet.getString("type");
+                card = cardFactory.createCard(type, resultSet);
+                card.setCardID(cardID);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return card;
     }
 
     public void update(Card card) {

@@ -4,7 +4,9 @@ import exceptions.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Transaction {
     private int transactionID;
@@ -43,6 +45,11 @@ public class Transaction {
         this.read(in);
     }
 
+    public Transaction(int transactionID, Scanner in) throws ParseException {
+        this.transactionID = transactionID;
+        this.read(in);
+    }
+
     public void read(ResultSet in) {
         try {
             this.fromIBAN = in.getString("fromIBAN");
@@ -55,8 +62,25 @@ public class Transaction {
         }
     }
 
+    public void read(Scanner in) {
+        System.out.println("From IBAN: ");
+        this.fromIBAN = in.nextLine();
+        System.out.println("To IBAN: ");
+        this.toIBAN = in.nextLine();
+        System.out.println("Amount: ");
+        this.amount = in.nextDouble();
+        in.nextLine();
+        System.out.println("Description: ");
+        this.description = in.nextLine();
+        this.date = new Date();
+    }
+
     public int getTransactionID() {
         return transactionID;
+    }
+
+    public void setTransactionID(int transactionID) {
+        this.transactionID = transactionID;
     }
 
     public String getFromIBAN() {
@@ -82,7 +106,8 @@ public class Transaction {
     @Override
     public String toString() {
         return "Transaction{" +
-                "from='" + fromIBAN + '\'' +
+                "transactionID='" + transactionID + '\'' +
+                ", from='" + fromIBAN + '\'' +
                 ", to='" + toIBAN + '\'' +
                 ", amount=" + amount +
                 ", description='" + description + '\'' +

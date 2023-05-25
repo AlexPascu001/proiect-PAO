@@ -2,6 +2,7 @@ package model.customer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class Address {
     private String street;
@@ -20,6 +21,10 @@ public class Address {
         this.read(in);
     }
 
+    public Address(Scanner in){
+        this.read(in);
+    }
+
     private void read(ResultSet in) {
         try {
             this.street = in.getString("street");
@@ -30,6 +35,17 @@ public class Address {
         catch (SQLException e) {
             System.out.println(e.toString());
         }
+    }
+
+    public void read(Scanner in) {
+        System.out.print("Street: ");
+        this.street = in.nextLine();
+        System.out.print("City: ");
+        this.city = in.nextLine();
+        System.out.print("Country: ");
+        this.country = in.nextLine();
+        System.out.print("Zip Code: ");
+        this.zipCode = Integer.parseInt(in.nextLine());
     }
 
     @Override

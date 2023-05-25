@@ -6,26 +6,15 @@ public class SavingsAccount extends Account{
     private double interestRate;
     private final Date startDate;
 
-    public SavingsAccount(String name, int customerId, int uniqueId) {
-        super(name, customerId, uniqueId);
-        this.startDate = new Date();
-        this.interestRate = 2.5;
-    }
 
-    public SavingsAccount(String name, int customerId, int uniqueId, double interestRate) {
-        super(name, customerId, uniqueId);
-        this.startDate = new Date();
-        this.interestRate = interestRate;
-    }
-
-    public SavingsAccount(String IBAN, String swiftCode, String bankName, String name, double balance, int customerID, double interestRate, Date startDate) {
-        super(IBAN, swiftCode, bankName, name, balance, customerID);
+    public SavingsAccount(int id, String IBAN, String swiftCode, String bankName, String name, double balance, int customerID, double interestRate, Date startDate) {
+        super(id, IBAN, swiftCode, bankName, name, balance, customerID);
         this.interestRate = interestRate;
         this.startDate = startDate;
     }
 
-    public SavingsAccount(String IBAN, String swiftCode, String bankName, String name, double balance, int customerID, double interestRate) {
-        super(IBAN, swiftCode, bankName, name, balance, customerID);
+    public SavingsAccount(int id, String IBAN, String swiftCode, String bankName, String name, double balance, int customerID, double interestRate) {
+        super(id, IBAN, swiftCode, bankName, name, balance, customerID);
         this.interestRate = interestRate;
         this.startDate = new Date();
     }

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerService {
-    private Connection connection;
-    private CustomerFactory customerFactory;
+    private final Connection connection;
+    private CustomerFactory customerFactory = new CustomerFactory();
     private static CustomerService instance = null;
 
     private CustomerService(Connection connection) {
@@ -50,17 +50,43 @@ public class CustomerService {
             String sql = "SELECT * FROM Customers";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
+            if (resultSet == null) {
+                statement.close();
+                return customers;
+            }
             while (resultSet.next()) {
                 Customer customer = customerFactory.createCustomer(resultSet);
+                customer.setCustomerID(resultSet.getInt("customerID"));
                 customers.add(customer);
             }
             resultSet.close();
             statement.close();
         }
         catch (SQLException e) {
+            System.out.println("Error in CustomerService.read()");
             System.out.println(e.toString());
         }
         return customers;
+    }
+
+    public Customer read(int customerID) {
+        Customer customer = null;
+        try {
+            String sql = "SELECT * FROM Customers WHERE customerID = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, customerID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                customer = customerFactory.createCustomer(resultSet);
+                customer.setCustomerID(customerID);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return customer;
     }
 
     public void update(Customer customer) {

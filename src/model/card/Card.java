@@ -1,10 +1,12 @@
 package model.card;
 
+
 import java.sql.ResultSet;
+import java.text.ParseException;
 import java.util.*;
 
 public abstract class Card {
-    private final int cardID;
+    private int cardID;
     private int CVV;
     private int PIN;
     private String cardNumber;
@@ -34,6 +36,11 @@ public abstract class Card {
         this.read(in);
     }
 
+    public Card(int cardID, Scanner in) throws ParseException {
+        this.cardID = cardID;
+        this.read(in);
+    }
+
     public void read(ResultSet in) {
         try {
             this.cardNumber = in.getString("cardNumber");
@@ -44,6 +51,15 @@ public abstract class Card {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void read(Scanner in) {
+        System.out.print("IBAN: ");
+        this.IBAN = in.nextLine();
+        this.expiryDate = generateExpiryDate();
+        this.CVV = generateCVV();
+        this.PIN = generatePIN();
+        this.cardNumber = generateCardNumber();
     }
 
     private int generateCVV() {
@@ -87,6 +103,10 @@ public abstract class Card {
 
     public int getCardID() {
         return cardID;
+    }
+
+    public void setCardID(int cardID) {
+        this.cardID = cardID;
     }
 
     public int getCVV() {

@@ -1,16 +1,15 @@
 package model.customer;
-
 import model.banking.Account;
 import exceptions.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Customer {
-    private final int customerID;
+    private int customerID;
     private String firstName;
     private String lastName;
     private String CNP;
@@ -69,6 +68,11 @@ public class Customer {
         this.read(in);
     }
 
+    public Customer(int customerID, Scanner in) throws Exception {
+        this.customerID = customerID;
+        this.read(in);
+    }
+
     private void read(ResultSet in) {
         try {
             this.firstName = in.getString("firstName");
@@ -84,9 +88,35 @@ public class Customer {
         }
     }
 
+    private void read(Scanner in) throws Exception {
+        System.out.println("First name: ");
+        this.firstName = in.nextLine();
+        System.out.println("Last name: ");
+        this.lastName = in.nextLine();
+        System.out.println("CNP: ");
+        // TODO: validate CNP (length, digits only)
+        this.CNP = in.nextLine();
+        if (this.CNP.length() != 13)
+            throw new InvalidCNPException();
+        if (this.CNP.chars().anyMatch(c -> !Character.isDigit(c)))
+            throw new InvalidCNPException();
+        System.out.println("Phone number: ");
+        this.phoneNumber = in.nextLine();
+        if (this.phoneNumber.length() != 10)
+            throw new InvalidPhoneNumberException();
+        if (this.phoneNumber.chars().anyMatch(c -> !Character.isDigit(c)))
+            throw new InvalidPhoneNumberException();
+        System.out.println("Email: ");
+        this.email = in.nextLine();
+        System.out.println("Birth date: (yyyy-MM-dd)");
+        this.birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(in.nextLine());
+        System.out.println("Address: ");
+        this.address = new Address(in);
+    }
+
     @Override
     public String toString() {
-        return "model.Customer{" +
+        return "Customer{" +
                 "customerID=" + customerID +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -100,7 +130,7 @@ public class Customer {
     }
 
     public String toCSV() {
-        return "model.Customer," + customerID + "," + firstName + "," + lastName + "," + CNP + "," + address.toCSV() + "," + phoneNumber + "," + email + "," + birthDate;
+        return "Customer," + customerID + "," + firstName + "," + lastName + "," + CNP + "," + address.toCSV() + "," + phoneNumber + "," + email + "," + birthDate;
     }
 
     public int getCustomerID() {
@@ -196,4 +226,17 @@ public class Customer {
         return null;
     }
 
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(customerID, firstName, lastName, CNP, address, phoneNumber, email, birthDate, accounts);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Customer && ((Customer) obj).customerID == this.customerID;
+    }
 }

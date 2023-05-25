@@ -5,21 +5,25 @@ import exceptions.InsufficientFundsException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 
 public class Account implements Comparator<Transaction> {
+    protected int accountID;
     protected String IBAN;
     protected String swiftCode;
     protected String bankName;
     protected String name;
     protected double balance;
-    final protected int customerID;
+    protected int customerID;
     protected Card card;
 
 
-    public Account(String IBAN, String swiftCode, String bankName, String name, double balance, int customerID, Card card) {
+    public Account(int accountID, String IBAN, String swiftCode, String bankName, String name, double balance, int customerID, Card card) {
+        this.accountID = accountID;
         this.IBAN = IBAN;
         this.swiftCode = swiftCode;
         this.bankName = bankName;
@@ -29,7 +33,8 @@ public class Account implements Comparator<Transaction> {
         this.card = card;
     }
 
-    public Account(String IBAN, String swiftCode, String bankName, String name, double balance, int customerID) {
+    public Account(int accountID, String IBAN, String swiftCode, String bankName, String name, double balance, int customerID) {
+        this.accountID = accountID;
         this.IBAN = IBAN;
         this.swiftCode = swiftCode;
         this.bankName = bankName;
@@ -38,34 +43,71 @@ public class Account implements Comparator<Transaction> {
         this.customerID = customerID;
     }
 
-    public Account(String name, int customerID, int uniqueID) {
+    public Account(int accountID, String name, int customerID, int uniqueID) {
+        this.accountID = accountID;
         this.name = name;
         this.customerID = customerID;
         this.IBAN = generateIBAN(uniqueID);
         this.swiftCode = generateSwiftCode(uniqueID);
     }
 
-    public Account(int customerID, ResultSet in) {
-        this.customerID = customerID;
+    public Account(int accountID, ResultSet in) {
+        this.accountID = accountID;
         this.read(in);
+    }
+
+    public Account(int accountID, Scanner in) throws ParseException {
+        try {
+            this.accountID = accountID;
+            this.read(in);
+        }
+        catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 
     private void read(ResultSet in) {
         try {
+            this.accountID = in.getInt("accountID");
             this.IBAN = in.getString("IBAN");
             this.swiftCode = in.getString("swiftCode");
             this.bankName = in.getString("bankName");
             this.name = in.getString("name");
             this.balance = in.getDouble("balance");
-            // TODO: card?
+            this.customerID = in.getInt("customerID");
         }
         catch (SQLException e) {
             System.out.println(e.toString());
         }
     }
 
+    private void read(Scanner in) {
+        System.out.println("IBAN: ");
+        this.IBAN = in.nextLine();
+        System.out.println("Swift code: ");
+        this.swiftCode = in.nextLine();
+        System.out.println("Bank name: ");
+        this.bankName = in.nextLine();
+        System.out.println("Name: ");
+        this.name = in.nextLine();
+        System.out.println("Balance: ");
+        this.balance = in.nextDouble();
+        in.nextLine();
+        System.out.println("Customer ID: ");
+        this.customerID = in.nextInt();
+        in.nextLine();
+    }
+
     public int compare(Transaction t1, Transaction t2) {
         return t1.getDate().compareTo(t2.getDate());
+    }
+
+   public int getAccountID() {
+        return accountID;
+    }
+
+    public void setAccountID(int accountID) {
+        this.accountID = accountID;
     }
 
     public String getIBAN() {
@@ -160,7 +202,8 @@ public class Account implements Comparator<Transaction> {
     @Override
     public String toString() {
         return "Account{" +
-                "IBAN='" + IBAN + '\'' +
+                "accountID='" + accountID + '\'' +
+                ", IBAN='" + IBAN + '\'' +
                 ", swiftCode='" + swiftCode + '\'' +
                 ", bankName='" + bankName + '\'' +
                 ", name='" + name + '\'' +

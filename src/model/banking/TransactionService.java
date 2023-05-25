@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionService {
-    private Connection connection;
-    private TransactionFactory transactionFactory;
+    private final Connection connection;
+    private TransactionFactory transactionFactory = new TransactionFactory();
     private static TransactionService instance = null;
 
     private TransactionService(Connection connection) {
@@ -45,17 +45,43 @@ public class TransactionService {
             String sql = "SELECT * FROM Transactions";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
+            if (resultSet == null) {
+                statement.close();
+                return transactions;
+            }
             while (resultSet.next()) {
                 Transaction transaction = transactionFactory.createTransaction(resultSet);
+                transaction.setTransactionID(resultSet.getInt("transactionID"));
                 transactions.add(transaction);
             }
             resultSet.close();
             statement.close();
         }
         catch (SQLException e) {
+            System.out.println("Error in TransactionService.read()");
             System.out.println(e.toString());
         }
         return transactions;
+    }
+
+    public Transaction read(int transactionID) {
+        Transaction transaction = null;
+        try {
+            String sql = "SELECT * FROM Transactions WHERE transactionID = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, transactionID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                transaction = transactionFactory.createTransaction(resultSet);
+                transaction.setTransactionID(transactionID);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return transaction;
     }
 
     public void update(Transaction transaction) {
