@@ -14,6 +14,9 @@ public class AuditService {
     public void logAction(String action) {
         try {
             FileWriter fileWriter = new FileWriter(filePath, true);
+            if (action.trim().length() == 0) {
+                return;
+            }
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
             String timestamp = now.format(dtf);

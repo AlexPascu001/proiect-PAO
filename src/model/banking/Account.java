@@ -6,10 +6,7 @@ import exceptions.InsufficientFundsException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Account implements Comparator<Transaction> {
     protected int accountID;
@@ -215,5 +212,15 @@ public class Account implements Comparator<Transaction> {
 
     public String toCSV() {
         return "Account," + IBAN + "," + swiftCode + "," + bankName + "," + name + "," + balance + "," + customerID;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accountID, IBAN, swiftCode, bankName, name, balance, customerID, card);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Account && ((Account) obj).accountID == this.accountID;
     }
 }

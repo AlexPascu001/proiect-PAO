@@ -87,18 +87,17 @@ public abstract class Card {
 
     @Override
     public String toString() {
-        return "model.Card{" +
+        return "Card{" +
                 "cardID=" + cardID +
                 ", CVV=" + CVV +
                 ", PIN=" + PIN +
                 ", cardNumber='" + cardNumber + '\'' +
                 ", IBAN='" + IBAN + '\'' +
-                ", expiryDate=" + expiryDate +
-                '}';
+                ", expiryDate=" + expiryDate;
     }
 
     public String toCSV() {
-        return "model.Card," + cardID + "," + CVV + "," + PIN + "," + cardNumber + "," + IBAN + "," + expiryDate;
+        return "Card," + cardID + "," + CVV + "," + PIN + "," + cardNumber + "," + IBAN + "," + expiryDate;
     }
 
     public int getCardID() {
@@ -130,4 +129,14 @@ public abstract class Card {
     }
 
     public abstract double fee();
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cardID, CVV, PIN, cardNumber, IBAN, expiryDate);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Card && ((Card) obj).cardID == this.cardID;
+    }
 }

@@ -21,25 +21,21 @@ private static int id = 1;
     }
 
     public Card createCard(String type, Scanner in) {
-        Supplier<Card> cardSupplier = switch (type) {
-            case "Visa" -> () -> {
+        switch (type) {
+            case "Visa" -> {
                 try {
                     return new Visa(id++, in);
                 } catch (ParseException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
-            };
-            case "MasterCard" -> () -> {
+            }
+            case "MasterCard" -> {
                 try {
                     return new MasterCard(id++, in);
                 } catch (ParseException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
-            };
-            default -> null;
-        };
-        if (cardSupplier != null) {
-            return cardSupplier.get();
+            }
         }
         return null;
     }

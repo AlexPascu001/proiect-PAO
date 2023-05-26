@@ -21,4 +21,10 @@ public class MasterCard extends Card {
     public double fee() {
         return 5;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", type=MasterCard, " + "fee=" + fee() + "}";
+    }
+
 }

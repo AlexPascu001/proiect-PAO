@@ -67,6 +67,7 @@ public class Main {
         AuditService auditService = new AuditService("data\\audit.csv");
         BankService bankService = BankService.getInstance(customerService, accountService, transactionService, cardService);
 
+        //TODO: check audit file
 
         while (true) {
             System.out.println("Please type your command: (type 'help' for a list of commands)");

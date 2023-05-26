@@ -21,4 +21,9 @@ public class Visa extends Card {
     public double fee() {
         return 10;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", type=Visa, " + "fee=" + fee() + "}";
+    }
 }

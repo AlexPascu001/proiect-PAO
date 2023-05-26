@@ -3,6 +3,7 @@ package model.card;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CardService {
@@ -60,7 +61,7 @@ public class CardService {
     }
 
     public List<Card> read() {
-        List<Card> cards = null;
+        List<Card> cards = new ArrayList<>();
         try {
             String sql = "SELECT * FROM Cards";
             Statement statement = connection.prepareStatement(sql);
@@ -70,18 +71,17 @@ public class CardService {
                 return cards;
             }
             if (resultSet.next()) {
-                String type = resultSet.getString("type");
-                while (resultSet.next()) {
+                do {
+                    String type = resultSet.getString("type");
                     Card card = cardFactory.createCard(type, resultSet);
                     card.setCardID(resultSet.getInt("cardID"));
                     cards.add(card);
-                }
+                } while (resultSet.next());
             }
             resultSet.close();
             statement.close();
         }
         catch (SQLException e) {
-            System.out.println("Error in CardService.read()");
             System.out.println(e.toString());
         }
         return cards;
@@ -108,16 +108,17 @@ public class CardService {
         return card;
     }
 
-    public void update(Card card) {
+    public void update(Card card, String type) {
         try {
-            String sql = "UPDATE Cards SET cardNumber = ?, IBAN = ?, CVV = ?, PIN = ?, expiryDate = ? WHERE cardID = ?";
+            String sql = "UPDATE Cards SET cardNumber = ?, IBAN = ?, CVV = ?, PIN = ?, expiryDate = ?, type = ? WHERE cardID = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, card.getCardNumber());
             preparedStatement.setString(2, card.getIBAN());
             preparedStatement.setInt(3, card.getCVV());
             preparedStatement.setInt(4, card.getPIN());
             preparedStatement.setString(5, new SimpleDateFormat("yyyy-MM-dd").format(card.getExpiryDate()));
-            preparedStatement.setInt(6, card.getCardID());
+            preparedStatement.setString(6, type);
+            preparedStatement.setInt(7, card.getCardID());
             preparedStatement.execute();
             preparedStatement.close();
         }

@@ -41,7 +41,6 @@ public class BankService {
         this.transactions = transactionService.read();
         this.cards = cardService.read();
 
-        // functional programming
         // null check
         if (this.customers == null) {
             this.customers = new ArrayList<>();
@@ -55,6 +54,7 @@ public class BankService {
         if (this.cards == null) {
             this.cards = new ArrayList<>();
         }
+        // some functional programming
         // toList return immutable list so we need to create a new list
         this.customerIDs = new ArrayList<>(this.customers.stream().map(Customer::getCustomerID).toList());
         this.accountIDs = new ArrayList<>(this.accounts.stream().map(Account::getAccountID).toList());
@@ -70,32 +70,33 @@ public class BankService {
     }
 
     public List<Customer> getCustomers() {
-        return customers;
+        return customers = customerService.read();
     }
 
     public List<Account> getAccounts() {
-        return accounts;
+        return accounts = accountService.read();
     }
 
     public List<Transaction> getTransactions() {
-        return transactions;
+        return transactions = transactionService.read();
     }
 
     public List<Card> getCards() {
-        return cards;
+        return cards = cardService.read();
     }
 
     //TODO: null check and correct input check
     //TODO: handle exceptions
-    //TODO: check errora for other classes
+    //TODO: check errors for other classes
+    //TODO: card doesn't work
+    //TODO: explicit message when null is returned ("No customers found")
 
     public void createCustomer(Scanner in) throws ParseException {
         System.out.println("createCustomer <firstName> <lastName> <CNP> <phoneNumber> <email> <birthDate> <address>");
         Customer customer = customerFactory.createCustomer(in);
         this.customerService.create(customer);
         this.customers.add(customer);
-        Integer id = Integer.valueOf(customer.getCustomerID());
-        this.customerIDs.add(id);
+        this.customerIDs.add(customer.getCustomerID());
         System.out.println("Customer created successfully");
     }
 
@@ -106,28 +107,14 @@ public class BankService {
             System.out.println("Invalid customer ID");
             return;
         }
-        this.customers.get(customers.indexOf(account.getCustomerID())).addAccount(account);
+        int customerIndex = this.customerIDs.indexOf(account.getCustomerID());
+        this.customers.get(customerIndex).addAccount(account);
         this.accountService.create(account);
         this.accounts.add(account);
         this.accountIDs.add(account.getAccountID());
         System.out.println("Account created successfully");
     }
 
-    public void removeAccount(Scanner in) {
-        System.out.println("removeAccount <accountID>");
-        System.out.println("Account ID: ");
-        int accountID = in.nextInt();
-        Account account = this.accountService.read(accountID);
-        if (account == null) {
-            System.out.println("Account not found");
-            return;
-        }
-        this.accounts.remove(account);
-        this.customers.get(customers.indexOf(account.getCustomerID())).removeAccount(account);
-        this.accountService.delete(account);
-        this.accountIDs.remove(account.getAccountID());
-        System.out.println("Account removed successfully");
-    }
 
     public void createTransaction(Scanner in) throws ParseException {
         System.out.println("createTransaction <fromIBAN> <toIBAN> <amount> <description>");
@@ -156,21 +143,24 @@ public class BankService {
 
     public void createCard(Scanner in) throws ParseException {
         System.out.println("createCard <type> <IBAN>");
-        System.out.println("Type: (Visa/Mastercard)");
+        System.out.println("Type: (Visa/MasterCard)");
         String type = in.next();
-        if (type.equals("Visa") == false && type.equals("Mastercard") == false) {
+        in.nextLine();
+        if (type.equals("Visa") == false && type.equals("MasterCard") == false) {
             System.out.println("Invalid card type");
             return;
         }
         Card card = cardFactory.createCard(type, in);
         this.cards.add(card);
         this.cardIDs.add(card.getCardID());
-        if (Objects.equals(type, "Mastercard"))
+        if (Objects.equals(type, "MasterCard"))
             this.cardService.create((MasterCard) card);
         else if (Objects.equals(type, "Visa"))
             this.cardService.create((Visa) card);
-        else
+        else {
             System.out.println("Invalid card type");
+            return;
+        }
 
         System.out.println("Card created successfully");
     }
@@ -295,7 +285,6 @@ public class BankService {
 
         Customer customer = this.customerService.read(customerID);
         int index = this.customers.indexOf(customer);
-        System.out.println(index);
         System.out.println("First name: ");
         customer.setFirstName(in.next());
         System.out.println("Last name: ");
@@ -318,30 +307,31 @@ public class BankService {
     }
 
     public void updateAccount(Scanner in) {
-        System.out.println("updateAccount <accountID> <customerID> <IBAN> <swiftCode> <bankName> <name> <balance>");
+        System.out.println("updateAccount <accountID> <IBAN> <swiftCode> <bankName> <name> <balance>");
         System.out.println("Account ID: ");
         int accountID = in.nextInt();
+        in.nextLine();
         if (this.accountIDs.contains(accountID) == false) {
             System.out.println("Invalid account ID");
             return;
         }
 
-        System.out.println("Customer ID: ");
-        int customerID = in.nextInt();
-
-        if (this.customerIDs.contains(customerID) == false) {
-            System.out.println("Invalid customer ID");
-            return;
-        }
-
-        Customer customer = this.customerService.read(customerID);
-        Account account = this.accountService.read(customerID);
+        Account account = this.accountService.read(accountID);
         int index = this.accounts.indexOf(account);
-        account.setIBAN(in.next());
-        account.setSwiftCode(in.next());
-        account.setBankName(in.next());
-        account.setName(in.next());
+        System.out.println(index);
+        System.out.println(accounts);
+
+        System.out.println("IBAN: ");
+        account.setIBAN(in.nextLine());
+        System.out.println("Swift code: ");
+        account.setSwiftCode(in.nextLine());
+        System.out.println("Bank name: ");
+        account.setBankName(in.nextLine());
+        System.out.println("Name: ");
+        account.setName(in.nextLine());
+        System.out.println("Balance: ");
         account.setBalance(in.nextDouble());
+        in.nextLine();
         this.accounts.set(index, account);
         this.accountService.update(account);
         System.out.println("Account updated successfully");
@@ -351,7 +341,6 @@ public class BankService {
         System.out.println("updateCard <cardID> <type> <IBAN>");
         System.out.println("Card ID: ");
         int cardID = in.nextInt();
-
         if (this.cardIDs.contains(cardID) == false) {
             System.out.println("Invalid card ID");
             return;
@@ -359,14 +348,17 @@ public class BankService {
 
         Card card = this.cardService.read(cardID);
         int index = this.cards.indexOf(card);
-        this.cards.remove(card);
-        Card newCard = cardFactory.createCard(in.next(), in);
+        System.out.println("Type: ");
+        String type = in.next();
+        in.nextLine();
+        Card newCard = cardFactory.createCard(type, in);
+        newCard.setCardID(cardID);
         this.cards.set(index, newCard);
-        this.cardService.update(newCard);
+        this.cardService.update(newCard, type);
         System.out.println("Card updated successfully");
     }
 
-    public void updateTransaction(Scanner in) {
+    public void updateTransaction(Scanner in)  throws ParseException {
         System.out.println("updateTransaction <transactionID> <fromIBAN> <toIBAN> <amount> <description> <date>");
         System.out.println("Transaction ID: ");
         int transactionID = in.nextInt();
@@ -378,6 +370,17 @@ public class BankService {
 
         Transaction transaction = this.transactionService.read(transactionID);
         int index = this.transactions.indexOf(transaction);
+        System.out.println("From IBAN: ");
+        transaction.setFromIBAN(in.next());
+        System.out.println("To IBAN: ");
+        transaction.setToIBAN(in.next());
+        System.out.println("Amount: ");
+        transaction.setAmount(in.nextDouble());
+        System.out.println("Description: ");
+        transaction.setDescription(in.next());
+        System.out.println("Date: (yyyy-MM-dd)");
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(in.next());
+        transaction.setDate(date);
         this.transactionService.update(transaction);
         this.transactions.set(index, transaction);
         System.out.println("Transaction updated successfully");
@@ -396,6 +399,16 @@ public class BankService {
         Customer customer = this.customerService.read(customerID);
         this.customers.remove(customer);
         this.customerService.delete(customer);
+        // also delete all accounts associated with this customer
+        List<Account> toRemove = new ArrayList<Account>();
+        for (Account account : this.accounts) {
+            if (account.getCustomerID() == customerID) {
+                toRemove.add(account);
+                int index = this.accountIDs.indexOf(account.getAccountID());
+                this.accountIDs.remove(index);
+            }
+        }
+        this.accounts.removeAll(toRemove);
         this.customerIDs.remove(this.customerIDs.indexOf(customerID));
         System.out.println("Customer deleted successfully");
     }

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Transaction {
@@ -87,20 +88,40 @@ public class Transaction {
         return fromIBAN;
     }
 
+    public void setFromIBAN(String fromIBAN) {
+        this.fromIBAN = fromIBAN;
+    }
+
     public String getToIBAN() {
         return toIBAN;
+    }
+
+    public void setToIBAN(String toIBAN) {
+        this.toIBAN = toIBAN;
     }
 
     public double getAmount() {
         return amount;
     }
 
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getDate() {
         return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     @Override
@@ -117,5 +138,15 @@ public class Transaction {
 
     public String toCSV() {
         return "Transaction," + fromIBAN + "," + toIBAN + "," + amount + "," + description + "," + date;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(transactionID, fromIBAN, toIBAN, amount, description, date);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Transaction && this.transactionID == ((Transaction) obj).transactionID;
     }
 }
