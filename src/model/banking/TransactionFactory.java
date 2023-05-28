@@ -1,7 +1,6 @@
 package model.banking;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Scanner;
 import java.util.function.Supplier;

@@ -59,7 +59,7 @@ public class Account implements Comparator<Transaction> {
             this.read(in);
         }
         catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -74,7 +74,7 @@ public class Account implements Comparator<Transaction> {
             this.customerID = in.getInt("customerID");
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -206,7 +206,6 @@ public class Account implements Comparator<Transaction> {
                 ", name='" + name + '\'' +
                 ", balance=" + balance +
                 ", customerID=" + customerID +
-                ", card=" + (card != null ? card.toString() : "null") +
                 '}';
     }
 

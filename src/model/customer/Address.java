@@ -33,7 +33,7 @@ public class Address {
             this.zipCode = in.getInt("zipcode");
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 

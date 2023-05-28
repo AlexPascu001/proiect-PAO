@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CardService {
     private final Connection connection;
-    private CardFactory cardFactory = new CardFactory();
+    private final CardFactory cardFactory = new CardFactory();
     private static CardService instance = null;
 
     private CardService(Connection connection) {
@@ -37,7 +37,7 @@ public class CardService {
             preparedStatement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -56,7 +56,7 @@ public class CardService {
             preparedStatement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -82,7 +82,7 @@ public class CardService {
             statement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
         return cards;
     }
@@ -103,7 +103,7 @@ public class CardService {
             preparedStatement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
         return card;
     }
@@ -123,7 +123,7 @@ public class CardService {
             preparedStatement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -136,7 +136,7 @@ public class CardService {
             preparedStatement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 }

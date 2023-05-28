@@ -47,7 +47,7 @@ public class Main {
             return DriverManager.getConnection(url, username, password);
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
             return null;
         }
     }
@@ -67,11 +67,13 @@ public class Main {
         AuditService auditService = new AuditService("data\\audit.csv");
         BankService bankService = BankService.getInstance(customerService, accountService, transactionService, cardService);
 
-        //TODO: check audit file
 
         while (true) {
             System.out.println("Please type your command: (type 'help' for a list of commands)");
             String command = in.nextLine();
+            if (command == null || command.equals("") || command.trim().equals("")) {
+                continue;
+            }
             try {
                 switch (command) {
                     case "createCustomer" -> bankService.createCustomer(in);
@@ -103,10 +105,11 @@ public class Main {
                     case "exit" -> {
                         return;
                     }
+                    default -> System.out.println("Invalid command!");
                 }
             }
             catch (Exception e) {
-                System.out.println(e.toString());
+                System.out.println(e);
             }
             finally {
                 auditService.logAction(command);

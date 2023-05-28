@@ -6,7 +6,7 @@ import java.util.List;
 
 public class AccountService {
     private final Connection connection;
-    private AccountFactory accountFactory = new AccountFactory();
+    private final AccountFactory accountFactory = new AccountFactory();
     private static AccountService instance = null;
 
     private AccountService(Connection connection) {
@@ -35,7 +35,7 @@ public class AccountService {
             preparedStatement.close();
         }
         catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -59,7 +59,7 @@ public class AccountService {
         }
         catch (Exception e) {
             System.out.println("Error in AccountService.read()");
-            System.out.println(e.toString());
+            System.out.println(e);
         }
         return accounts;
     }
@@ -79,7 +79,7 @@ public class AccountService {
             preparedStatement.close();
         }
         catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
         return account;
     }
@@ -99,7 +99,7 @@ public class AccountService {
             preparedStatement.close();
         }
         catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
         return accounts;
     }
@@ -119,7 +119,7 @@ public class AccountService {
             preparedStatement.close();
         }
         catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -132,7 +132,7 @@ public class AccountService {
             preparedStatement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 }

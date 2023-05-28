@@ -7,7 +7,7 @@ import java.util.List;
 
 public class CustomerService {
     private final Connection connection;
-    private CustomerFactory customerFactory = new CustomerFactory();
+    private final CustomerFactory customerFactory = new CustomerFactory();
     private static CustomerService instance = null;
 
     private CustomerService(Connection connection) {
@@ -40,7 +40,7 @@ public class CustomerService {
             preparedStatement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -64,7 +64,7 @@ public class CustomerService {
         }
         catch (SQLException e) {
             System.out.println("Error in CustomerService.read()");
-            System.out.println(e.toString());
+            System.out.println(e);
         }
         return customers;
     }
@@ -84,7 +84,7 @@ public class CustomerService {
             preparedStatement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
         return customer;
     }
@@ -108,7 +108,7 @@ public class CustomerService {
             preparedStatement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -121,7 +121,7 @@ public class CustomerService {
             preparedStatement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 }

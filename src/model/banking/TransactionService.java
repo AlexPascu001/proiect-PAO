@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TransactionService {
     private final Connection connection;
-    private TransactionFactory transactionFactory = new TransactionFactory();
+    private final TransactionFactory transactionFactory = new TransactionFactory();
     private static TransactionService instance = null;
 
     private TransactionService(Connection connection) {
@@ -35,7 +35,7 @@ public class TransactionService {
             preparedStatement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -59,7 +59,7 @@ public class TransactionService {
         }
         catch (SQLException e) {
             System.out.println("Error in TransactionService.read()");
-            System.out.println(e.toString());
+            System.out.println(e);
         }
         return transactions;
     }
@@ -79,7 +79,7 @@ public class TransactionService {
             preparedStatement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
         return transaction;
     }
@@ -98,7 +98,7 @@ public class TransactionService {
             preparedStatement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -111,7 +111,7 @@ public class TransactionService {
             preparedStatement.close();
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 }

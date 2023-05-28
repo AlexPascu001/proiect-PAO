@@ -4,7 +4,6 @@ import exceptions.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -84,7 +83,7 @@ public class Customer {
             this.birthDate = in.getDate("birthDate");
         }
         catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -94,7 +93,6 @@ public class Customer {
         System.out.println("Last name: ");
         this.lastName = in.nextLine();
         System.out.println("CNP: ");
-        // TODO: validate CNP (length, digits only)
         this.CNP = in.nextLine();
         if (this.CNP.length() != 13)
             throw new InvalidCNPException();
@@ -110,6 +108,8 @@ public class Customer {
         this.email = in.nextLine();
         System.out.println("Birth date: (yyyy-MM-dd)");
         this.birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(in.nextLine());
+        if ((new Date()).getTime()- birthDate.getTime() < 18L * 365 * 24 * 60 * 60 * 1000)
+            throw new IllegalAgeException();
         System.out.println("Address: ");
         this.address = new Address(in);
     }
@@ -125,7 +125,6 @@ public class Customer {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", birthDate=" + birthDate +
-                ", accounts=" + accounts +
                 '}';
     }
 

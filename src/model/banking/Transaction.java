@@ -59,7 +59,7 @@ public class Transaction {
             this.description = in.getString("description");
             this.date = in.getDate("date");
         } catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 

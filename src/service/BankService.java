@@ -18,15 +18,15 @@ public class BankService {
     private final TransactionFactory transactionFactory = new TransactionFactory();
     private final CardFactory cardFactory = new CardFactory();
 
-    private CustomerService customerService;
-    private AccountService accountService;
-    private TransactionService transactionService;
-    private CardService cardService;
+    private final CustomerService customerService;
+    private final AccountService accountService;
+    private final TransactionService transactionService;
+    private final CardService cardService;
 
-    private List<Integer> customerIDs;
-    private List<Integer> accountIDs;
-    private List<Integer> transactionIDs;
-    private List<Integer> cardIDs;
+    private final List<Integer> customerIDs;
+    private final List<Integer> accountIDs;
+    private final List<Integer> transactionIDs;
+    private final List<Integer> cardIDs;
 
     private static BankService instance = null;
 
@@ -55,7 +55,7 @@ public class BankService {
             this.cards = new ArrayList<>();
         }
         // some functional programming
-        // toList return immutable list so we need to create a new list
+        // toList return immutable list, so we need to create a new list
         this.customerIDs = new ArrayList<>(this.customers.stream().map(Customer::getCustomerID).toList());
         this.accountIDs = new ArrayList<>(this.accounts.stream().map(Account::getAccountID).toList());
         this.transactionIDs = new ArrayList<>(this.transactions.stream().map(Transaction::getTransactionID).toList());
@@ -70,26 +70,37 @@ public class BankService {
     }
 
     public List<Customer> getCustomers() {
-        return customers = customerService.read();
+        customers = customerService.read();
+        if (customers == null || customers.isEmpty()) {
+            System.out.println("No customers found");
+        }
+        return customers;
     }
 
     public List<Account> getAccounts() {
-        return accounts = accountService.read();
+        accounts = accountService.read();
+        if (accounts == null || accounts.isEmpty()) {
+            System.out.println("No accounts found");
+        }
+        return accounts;
     }
 
     public List<Transaction> getTransactions() {
-        return transactions = transactionService.read();
+        transactions = transactionService.read();
+        if (transactions == null || transactions.isEmpty()) {
+            System.out.println("No transactions found");
+        }
+        return transactions;
     }
 
     public List<Card> getCards() {
-        return cards = cardService.read();
+        cards = cardService.read();
+        if (cards == null || cards.isEmpty()) {
+            System.out.println("No cards found");
+        }
+        return cards;
     }
 
-    //TODO: null check and correct input check
-    //TODO: handle exceptions
-    //TODO: check errors for other classes
-    //TODO: card doesn't work
-    //TODO: explicit message when null is returned ("No customers found")
 
     public void createCustomer(Scanner in) throws ParseException {
         System.out.println("createCustomer <firstName> <lastName> <CNP> <phoneNumber> <email> <birthDate> <address>");
@@ -103,7 +114,7 @@ public class BankService {
     public void createAccount(Scanner in) throws ParseException {
         System.out.println("createAccount <IBAN> <swiftCode> <bankName> <name> <balance> <customerID>");
         Account account = accountFactory.createAccount(in);
-        if (this.customerIDs.contains(account.getCustomerID()) == false) {
+        if (!this.customerIDs.contains(account.getCustomerID())) {
             System.out.println("Invalid customer ID");
             return;
         }
@@ -130,12 +141,18 @@ public class BankService {
         System.out.println("Customer ID: ");
         int customerID = in.nextInt();
 
-        if (this.customerIDs.contains(customerID) == false) {
+        if (!this.customerIDs.contains(customerID)) {
             System.out.println("Invalid customer ID");
             return;
         }
 
         List<Account> accounts = this.accountService.readCustomer(customerID);
+
+        if (accounts == null) {
+            System.out.println("No accounts found");
+            return;
+        }
+
         for (Account account : accounts) {
             System.out.println(account);
         }
@@ -146,7 +163,7 @@ public class BankService {
         System.out.println("Type: (Visa/MasterCard)");
         String type = in.next();
         in.nextLine();
-        if (type.equals("Visa") == false && type.equals("MasterCard") == false) {
+        if (!type.equals("Visa") && !type.equals("MasterCard")) {
             System.out.println("Invalid card type");
             return;
         }
@@ -170,7 +187,7 @@ public class BankService {
         System.out.println("Account ID: ");
         int accountID = in.nextInt();
 
-        if (this.accountIDs.contains(accountID) == false) {
+        if (!this.accountIDs.contains(accountID)) {
             System.out.println("Invalid account ID");
             return;
         }
@@ -184,7 +201,7 @@ public class BankService {
         System.out.println("Account ID: ");
         int accountID = in.nextInt();
 
-        if (this.accountIDs.contains(accountID) == false) {
+        if (!this.accountIDs.contains(accountID)) {
             System.out.println("Invalid account ID");
             return;
         }
@@ -202,7 +219,7 @@ public class BankService {
         System.out.println("Account ID: ");
         int accountID = in.nextInt();
 
-        if (this.accountIDs.contains(accountID) == false) {
+        if (!this.accountIDs.contains(accountID)) {
             System.out.println("Invalid account ID");
             return;
         }
@@ -219,13 +236,13 @@ public class BankService {
         System.out.println("transfer <fromAccountID> <toAccountID> <amount>");
         System.out.println("From Account ID: ");
         int fromAccountID = in.nextInt();
-        if (this.accountIDs.contains(fromAccountID) == false) {
+        if (!this.accountIDs.contains(fromAccountID)) {
             System.out.println("Invalid fromAccount ID");
             return;
         }
         System.out.println("To Account ID: ");
         int toAccountID = in.nextInt();
-        if (this.accountIDs.contains(toAccountID) == false) {
+        if (!this.accountIDs.contains(toAccountID)) {
             System.out.println("Invalid toAccount ID");
             return;
         }
@@ -246,7 +263,7 @@ public class BankService {
         System.out.println("Customer ID: ");
         int customerID = in.nextInt();
 
-        if (this.customerIDs.contains(customerID) == false) {
+        if (!this.customerIDs.contains(customerID)) {
             System.out.println("Invalid customer ID");
             return;
         }
@@ -260,7 +277,7 @@ public class BankService {
         System.out.println("Account ID: ");
         int accountID = in.nextInt();
 
-        if (this.accountIDs.contains(accountID) == false) {
+        if (!this.accountIDs.contains(accountID)) {
             System.out.println("Invalid account ID");
             return;
         }
@@ -278,7 +295,7 @@ public class BankService {
         System.out.println("Customer ID: ");
         int customerID = in.nextInt();
 
-        if (this.customerIDs.contains(customerID) == false) {
+        if (!this.customerIDs.contains(customerID)) {
             System.out.println("Invalid customer ID");
             return;
         }
@@ -311,15 +328,13 @@ public class BankService {
         System.out.println("Account ID: ");
         int accountID = in.nextInt();
         in.nextLine();
-        if (this.accountIDs.contains(accountID) == false) {
+        if (!this.accountIDs.contains(accountID)) {
             System.out.println("Invalid account ID");
             return;
         }
 
         Account account = this.accountService.read(accountID);
         int index = this.accounts.indexOf(account);
-        System.out.println(index);
-        System.out.println(accounts);
 
         System.out.println("IBAN: ");
         account.setIBAN(in.nextLine());
@@ -341,7 +356,7 @@ public class BankService {
         System.out.println("updateCard <cardID> <type> <IBAN>");
         System.out.println("Card ID: ");
         int cardID = in.nextInt();
-        if (this.cardIDs.contains(cardID) == false) {
+        if (!this.cardIDs.contains(cardID)) {
             System.out.println("Invalid card ID");
             return;
         }
@@ -363,7 +378,7 @@ public class BankService {
         System.out.println("Transaction ID: ");
         int transactionID = in.nextInt();
 
-        if (this.transactionIDs.contains(transactionID) == false) {
+        if (!this.transactionIDs.contains(transactionID)) {
             System.out.println("Invalid transaction ID");
             return;
         }
@@ -376,8 +391,9 @@ public class BankService {
         transaction.setToIBAN(in.next());
         System.out.println("Amount: ");
         transaction.setAmount(in.nextDouble());
+        in.nextLine();
         System.out.println("Description: ");
-        transaction.setDescription(in.next());
+        transaction.setDescription(in.nextLine());
         System.out.println("Date: (yyyy-MM-dd)");
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse(in.next());
         transaction.setDate(date);
@@ -391,7 +407,7 @@ public class BankService {
         System.out.println("Customer ID: ");
         int customerID = in.nextInt();
 
-        if (this.customerIDs.contains(customerID) == false) {
+        if (!this.customerIDs.contains(customerID)) {
             System.out.println("Invalid customer ID");
             return;
         }
@@ -400,7 +416,7 @@ public class BankService {
         this.customers.remove(customer);
         this.customerService.delete(customer);
         // also delete all accounts associated with this customer
-        List<Account> toRemove = new ArrayList<Account>();
+        List<Account> toRemove = new ArrayList<>();
         for (Account account : this.accounts) {
             if (account.getCustomerID() == customerID) {
                 toRemove.add(account);
@@ -418,7 +434,7 @@ public class BankService {
         System.out.println("Account ID: ");
         int accountID = in.nextInt();
 
-        if (this.accountIDs.contains(accountID) == false) {
+        if (!this.accountIDs.contains(accountID)) {
             System.out.println("Invalid account ID");
             return;
         }
@@ -435,7 +451,7 @@ public class BankService {
         System.out.println("Card ID: ");
         int cardID = in.nextInt();
 
-        if (this.cardIDs.contains(cardID) == false) {
+        if (!this.cardIDs.contains(cardID)) {
             System.out.println("Invalid card ID");
             return;
         }
@@ -452,7 +468,7 @@ public class BankService {
         System.out.println("Transaction ID: ");
         int transactionID = in.nextInt();
 
-        if (this.transactionIDs.contains(transactionID) == false) {
+        if (!this.transactionIDs.contains(transactionID)) {
             System.out.println("Invalid transaction ID");
             return;
         }
@@ -469,7 +485,7 @@ public class BankService {
         System.out.println("Customer ID: ");
         int customerID = in.nextInt();
 
-        if (this.customerIDs.contains(customerID) == false) {
+        if (!this.customerIDs.contains(customerID)) {
             System.out.println("Invalid customer ID");
             return;
         }
@@ -483,7 +499,7 @@ public class BankService {
         System.out.println("Account ID: ");
         int accountID = in.nextInt();
 
-        if (this.accountIDs.contains(accountID) == false) {
+        if (!this.accountIDs.contains(accountID)) {
             System.out.println("Invalid account ID");
             return;
         }
@@ -497,7 +513,7 @@ public class BankService {
         System.out.println("Card ID: ");
         int cardID = in.nextInt();
 
-        if (this.cardIDs.contains(cardID) == false) {
+        if (!this.cardIDs.contains(cardID)) {
             System.out.println("Invalid card ID");
             return;
         }
@@ -511,7 +527,7 @@ public class BankService {
         System.out.println("Transaction ID: ");
         int transactionID = in.nextInt();
 
-        if (this.transactionIDs.contains(transactionID) == false) {
+        if (!this.transactionIDs.contains(transactionID)) {
             System.out.println("Invalid transaction ID");
             return;
         }
