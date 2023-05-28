@@ -26,9 +26,7 @@ Să se creeze o lista pe baza temei alese cu cel puțin 10 acțiuni/interogări 
 - adaugarea/retragerea unei sume de bani (`deposit`/`withdraw`)
 - transferul unei sume de bani (`transfer`)
 - obținerea conturilor asociate unui client (`getAccounts`)
-- obținerea adresei unui client (`getAddress`) - pentru a trimite recuperatorii :)
 - afișarea detaliilor unui client, card, cont (`override toString()` în fiecare clasă) 
-- afișarea tranzacțiilor unui client (`filterTransactions`)
 
 
 ### 2) Implementare
